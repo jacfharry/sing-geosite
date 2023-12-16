@@ -8,6 +8,10 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
+      - name: Set Variables
+        run:
+          echo "TAG_NAME=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
+        shell: bash
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -49,7 +53,7 @@ jobs:
         if: steps.build.outputs.skip != 'true'
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ steps.build.outputs.tag }}
+          tag_name: ${{ env.TAG_NAME }}
           files: |
             geosite.db
             geosite.db.sha256sum
